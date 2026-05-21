@@ -1,0 +1,6 @@
+{
+  "name": "PrayWith.me",
+  "description": "A peaceful, quiet, anonymous prayer-sharing digital candle wall where people can share and stand in solidarity with others' prayer requests.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
