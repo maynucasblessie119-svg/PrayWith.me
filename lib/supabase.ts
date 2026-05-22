@@ -12,8 +12,8 @@ export function getSupabase() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.VITE_SUPABASE_URL || '';
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || '';
 
-  if (!url || !key || url.includes('YOUR_') || key.includes('YOUR_')) {
-    console.warn('Supabase public configuration is missing or default. App will use the Express server fallback database.');
+  if (!url || !key || url.includes('YOUR_') || key.includes('YOUR_') || (!url.startsWith('http://') && !url.startsWith('https://'))) {
+    console.warn('Supabase public configuration is missing, default, or invalid. App will use the Express server fallback database.');
     return null;
   }
 

@@ -12,8 +12,8 @@ export function getSupabaseAdmin() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
-  if (!url || !serviceKey || url.includes('YOUR_') || serviceKey.includes('YOUR_')) {
-    console.warn('Supabase Admin Service Key is missing. Admin routines will operate on the local server database.');
+  if (!url || !serviceKey || url.includes('YOUR_') || serviceKey.includes('YOUR_') || (!url.startsWith('http://') && !url.startsWith('https://'))) {
+    console.warn('Supabase Admin Service Key or URL is missing, default, or invalid. Admin routines will operate on the local server database.');
     return null;
   }
 

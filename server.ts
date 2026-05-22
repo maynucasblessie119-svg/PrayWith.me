@@ -10,37 +10,10 @@ import { PrayerCategory } from './src/types.js';
 // Load environment variables
 dotenv.config();
 
-import crypto from 'crypto';
-
-const JWT_SECRET = process.env.JWT_SECRET || 'peace-shores-candle-wall-secret';
-
-function hashPassword(password: string): string {
-  return crypto.createHash('sha256').update(password + '-salt-praywithme').digest('hex');
-}
-
-function generateToken(userId: string): string {
-  const payload = JSON.stringify({ userId, exp: Date.now() + 30 * 24 * 60 * 60 * 1000 });
-  const signature = crypto.createHmac('sha256', JWT_SECRET).update(payload).digest('hex');
-  return Buffer.from(payload).toString('base64') + '.' + signature;
-}
-
-function verifyToken(token: string): string | null {
-  try {
-    const parts = token.split('.');
-    if (parts.length !== 2) return null;
-    const payloadStr = Buffer.from(parts[0], 'base64').toString('utf-8');
-    const signature = crypto.createHmac('sha256', JWT_SECRET).update(payloadStr).digest('hex');
-    if (signature !== parts[1]) return null;
-    
-    const payload = JSON.parse(payloadStr);
-    if (payload.exp < Date.now()) return null;
-    return payload.userId;
-  } catch (e) {
-    return null;
-  }
-}
+import { hashPassword, generateToken, verifyToken } from './lib/auth.js';
 
 async function authMiddleware(req: express.Request, res: express.Response, next: express.NextFunction) {
+
   try {
     const authHeader = req.headers['authorization'];
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
